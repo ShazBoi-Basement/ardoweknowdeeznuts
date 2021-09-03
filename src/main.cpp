@@ -1,16 +1,38 @@
 #include <Arduino.h>
 
-void setup() {
-  pinMode(13, OUTPUT);
+void voiceyeornah();
+
+void setup()
+{
+  pinMode(A5, INPUT);
+
+  pinMode(A4, OUTPUT);
+
+  pinMode(A3, OUTPUT);
+
+  analogWrite(A4, 0);
+  analogWrite(A3, 255);
+
   // put your setup code here, to run once:
   Serial.begin(9600);
-  Serial.print("Hello world!");
+  Serial.println("Hello world!");
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  digitalWrite(13, LOW);
-  delay(500);
-  digitalWrite(13, HIGH);
-  delay(500);
+void loop()
+{
+  voiceyeornah();
+}
+ // Sound detection
+void voiceyeornah()
+{
+  int voiceDetected = analogRead(A5);
+
+  if (voiceDetected > 100)
+  {
+    Serial.println("Ye"); // Sound detected
+  }
+  else{
+    Serial.println("Nah"); // Sound not detected
+  }
+  delay(200);
 }
