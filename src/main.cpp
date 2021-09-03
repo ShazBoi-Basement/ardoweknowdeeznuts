@@ -1,13 +1,12 @@
 #include <Arduino.h>
 
-void voiceyeornah();
+void voice_ye_or_nah();
+void low_pass_filter();
 
 void setup()
 {
   pinMode(A5, INPUT);
-
   pinMode(A4, OUTPUT);
-
   pinMode(A3, OUTPUT);
 
   analogWrite(A4, 0);
@@ -20,10 +19,11 @@ void setup()
 
 void loop()
 {
-  voiceyeornah();
+  voice_ye_or_nah();
+  low_pass_filter();
 }
- // Sound detection
-void voiceyeornah()
+// Sound detection
+void voice_ye_or_nah()
 {
   int voiceDetected = analogRead(A5);
 
@@ -31,8 +31,28 @@ void voiceyeornah()
   {
     Serial.println("Ye"); // Sound detected
   }
-  else{
+  else
+  {
     Serial.println("Nah"); // Sound not detected
   }
   delay(200);
+}
+
+// Low Pass Filter
+void low_pass_filter()
+{
+  int sum = 0;
+  for (int i = 0; i < 32; i++)
+  {
+    sum += analogRead(A5);
+    delay(0.2);
+  }
+
+  for (int i = 0; i < (int)(sum / 960); i++)
+  {
+    Serial.print("*");
+  }
+  Serial.println();
+
+  // Serial.println(sum / 16);
 }
